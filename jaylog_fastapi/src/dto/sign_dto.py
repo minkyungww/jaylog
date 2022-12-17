@@ -1,32 +1,40 @@
 from pydantic import BaseModel
 
+# TODO 클래스 명명법 등 DTO 설계 고민
+
 
 class ReqSignUp(BaseModel):
-    id : str
-    password : str
-    simpleDesc : str
-    
+    id: str
+    password: str
+    simpleDesc: str
+
+
 class ResSignUp(BaseModel):
-    idx : int
-    
+    idx: int
+
     class Config:
         orm_mode = True
-        
+
+
 class ReqSignIn(BaseModel):
-
     id: str
-
     password: str
 
 
-
-
 class ResSignIn(BaseModel):
-
     accessToken: str
-
     refreshToken: str
-    
+
+
+class ReqRefresh(BaseModel):
+    refreshToken: str
+
+
+class ResRefresh(BaseModel):
+    accessToken: str
+    refreshToken: str
+
+
 class AccessJwt(BaseModel):
     idx: int
     id: str
@@ -36,14 +44,14 @@ class AccessJwt(BaseModel):
     exp: int
 
     @staticmethod
-    def toDTO(jwtDict: dict):
+    def toDTO(jwt_dict: dict):
         return AccessJwt(
-            idx=jwtDict["idx"],
-            id=jwtDict["id"],
-            simpleDesc=jwtDict["simpleDesc"],
-            profileImage=jwtDict["profileImage"],
-            role=jwtDict["role"],
-            exp=jwtDict["exp"]
+            idx=jwt_dict["idx"],
+            id=jwt_dict["id"],
+            simpleDesc=jwt_dict["simpleDesc"],
+            profileImage=jwt_dict["profileImage"],
+            role=jwt_dict["role"],
+            exp=jwt_dict["exp"]
         )
 
     class Config:
@@ -55,10 +63,10 @@ class RefreshJwt(BaseModel):
     exp: int
 
     @staticmethod
-    def toDTO(jwtDict: dict):
+    def toDTO(jwt_dict: dict):
         return RefreshJwt(
-            idx=jwtDict["idx"],
-            exp=jwtDict["exp"]
+            idx=jwt_dict["idx"],
+            exp=jwt_dict["exp"]
         )
 
     class Config:
